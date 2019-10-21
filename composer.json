@@ -7,7 +7,16 @@
             "email": "625250353@qq.com"
         }
     ],
+    "support": {
+        "issues": "https://github.com/625250353/think-twig"
+    },
     "require": {
-        "php": "^7.0"
+        "php": "^7.0",
+        "php-angular/php-angular": "2.0.*"
+    },
+    "autoload": {
+        "classmap": {
+            "think\\view\\driver\\Angular": "src/Driver.php"
+        }
     }
 }
