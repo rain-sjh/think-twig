@@ -6,5 +6,8 @@
             "email": "625250353@qq.com"
         }
     ],
-    "require": {}
+    "require": {
+        "php": "^7.0",
+        "another-vendor/package": "1.*"
+    }
 }
