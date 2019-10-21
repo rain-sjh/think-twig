@@ -1,17 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8e71147c-0ffd-4790-8628-99fdcd829bb0" name="默认更改列表" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/think-twig.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Twig.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/TwigExpand.php" afterDir="false" />
+    <list default="true" id="8e71147c-0ffd-4790-8628-99fdcd829bb0" name="默认更改列表" comment="....">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,15 +72,42 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1571639197111</updated>
-      <workItem from="1571639198355" duration="513000" />
+      <workItem from="1571639198355" duration="737000" />
     </task>
+    <task id="LOCAL-00001" summary="....">
+      <created>1571639792778</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1571639792778</updated>
+    </task>
+    <task id="LOCAL-00002" summary="....">
+      <created>1571639815004</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1571639815004</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
-    <option name="LAST_COMMIT_MESSAGE" value="" />
+    <MESSAGE value="...." />
+    <option name="LAST_COMMIT_MESSAGE" value="...." />
   </component>
   <component name="WindowStateProjectService">
     <state x="2660" y="265" key="FileChooserDialogImpl" timestamp="1571639486341">
@@ -107,17 +126,17 @@
       <screen x="1920" y="0" width="1920" height="1050" />
     </state>
     <state x="2696" y="448" key="NewPhpFileDialog/0.0.1920.1050/1920.0.1920.1050@1920.0.1920.1050" timestamp="1571639307762" />
-    <state x="2472" y="257" key="Vcs.Push.Dialog.v2" timestamp="1571639680004">
+    <state x="2472" y="257" key="Vcs.Push.Dialog.v2" timestamp="1571639944570">
       <screen x="1920" y="0" width="1920" height="1050" />
     </state>
-    <state x="2472" y="257" key="Vcs.Push.Dialog.v2/0.0.1920.1050/1920.0.1920.1050@1920.0.1920.1050" timestamp="1571639680004" />
+    <state x="2472" y="257" key="Vcs.Push.Dialog.v2/0.0.1920.1050/1920.0.1920.1050@1920.0.1920.1050" timestamp="1571639944570" />
     <state x="2635" y="368" key="cloudConfig.SelfSettingsDialog" timestamp="1571639660618">
       <screen x="1920" y="0" width="1920" height="1050" />
     </state>
     <state x="2635" y="368" key="cloudConfig.SelfSettingsDialog/0.0.1920.1050/1920.0.1920.1050@1920.0.1920.1050" timestamp="1571639660617" />
-    <state x="2671" y="436" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1571639582871">
+    <state x="2671" y="436" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1571639938759">
       <screen x="1920" y="0" width="1920" height="1050" />
     </state>
-    <state x="2671" y="436" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1050/1920.0.1920.1050@1920.0.1920.1050" timestamp="1571639582871" />
+    <state x="2671" y="436" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1050/1920.0.1920.1050@1920.0.1920.1050" timestamp="1571639938759" />
   </component>
 </project>
