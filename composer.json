@@ -12,7 +12,8 @@
     },
     "require": {
         "php": ">=7.1.0",
-        "topthink/think-template": "^2.0"
+        "topthink/think-template": "^2.0",
+        "twig/twig": "*"
     },
     "autoload": {
         "psr-4": {
