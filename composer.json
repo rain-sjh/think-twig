@@ -16,7 +16,7 @@
     },
     "autoload": {
         "classmap": {
-            "think\\view\\driver\\Angular": "src/Driver.php"
+            "think\\view\\driver\\Angular": "src/Twig.php"
         }
     }
 }
