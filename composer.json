@@ -11,12 +11,12 @@
         "issues": "https://github.com/625250353/think-twig"
     },
     "require": {
-        "php": "^7.0",
-        "php-angular/php-angular": "2.0.*"
+        "php": ">=7.1.0",
+        "topthink/think-template": "^2.0"
     },
     "autoload": {
-        "classmap": {
-            "think\\view\\driver\\Angular": "src/Twig.php"
+        "psr-4": {
+            "think\\view\\driver\\": "src"
         }
     }
 }
