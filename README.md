@@ -1,6 +1,11 @@
 # think-twig
 tp6 twig模板
 
+#安装方式
+```
+composer require rain-sjh/think-twig
+```
+
 安装完成后请在config配置文件view.php进行一下配置
     
     return [
