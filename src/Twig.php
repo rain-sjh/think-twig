@@ -186,7 +186,7 @@ class Twig
 			return false;
 		});
 
-		echo $twig->render(str_replace($path, '', $template), $data);
+		$twig->display(str_replace($path, '', $template), $data);
 	}
 
 	/**
