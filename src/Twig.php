@@ -8,11 +8,12 @@
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
-declare (strict_types = 1);
+declare (strict_types=1);
 
 namespace think\view\driver;
 
 use think\App;
+use think\Exception;
 use think\helper\Str;
 use think\Template;
 use think\template\exception\TemplateNotFoundException;
@@ -28,7 +29,7 @@ class Twig
 		// 默认模板渲染规则 1 解析为小写+下划线 2 全部转换小写 3 保持操作方法
 		'auto_rule' => 1,
 		// 视图基础目录（集中式）
-		'view_base' => '',
+		'view_base' => 'view',
 		// 模板起始路径
 		'view_path' => '',
 		// 模板文件后缀
@@ -36,7 +37,7 @@ class Twig
 		// 模板文件名分隔符
 		'view_depr' => DIRECTORY_SEPARATOR,
 		// 是否开启模板编译缓存,设为false则每次都会重新编译
-		'tpl_cache' => false,
+		'tpl_cache' => true,
 	];
 
 	public function __construct(App $app, array $config = [])
@@ -45,16 +46,42 @@ class Twig
 
 		$this->config = array_merge($this->config, (array)$config);
 
-		if (empty($this->config['view_base'])) {
-			$this->config['view_base'] = $app->getRootPath() . 'view' . DIRECTORY_SEPARATOR;
-		}
-
 		if (empty($this->config['cache_path'])) {
 			$this->config['cache_path'] = $app->getRuntimePath() . 'temp' . DIRECTORY_SEPARATOR;
 		}
 
 		$this->template = new Template($this->config);
 		$this->template->setCache($app->cache);
+		$this->template->extend('$Think', function (array $vars) {
+			$type = strtoupper(trim(array_shift($vars)));
+			$param = implode('.', $vars);
+
+			switch ($type) {
+				case 'CONST':
+					$parseStr = strtoupper($param);
+					break;
+				case 'CONFIG':
+					$parseStr = 'config(\'' . $param . '\')';
+					break;
+				case 'LANG':
+					$parseStr = 'lang(\'' . $param . '\')';
+					break;
+				case 'NOW':
+					$parseStr = "date('Y-m-d g:i a',time())";
+					break;
+				case 'LDELIM':
+					$parseStr = '\'' . ltrim($this->getConfig('tpl_begin'), '\\') . '\'';
+					break;
+				case 'RDELIM':
+					$parseStr = '\'' . ltrim($this->getConfig('tpl_end'), '\\') . '\'';
+					break;
+				default:
+					$parseStr = defined($type) ? $type : '\'\'';
+			}
+
+			return $parseStr;
+		});
+
 		$this->template->extend('$Request', function (array $vars) {
 			// 获取Request请求对象参数
 			$method = array_shift($vars);
@@ -90,9 +117,26 @@ class Twig
 
 	/**
 	 * 渲染模板文件
+	 * @access public
+	 * @param string $template 模板文件
+	 * @param array $data 模板变量
+	 * @return void
 	 */
 	public function fetch(string $template, array $data = []): void
 	{
+		if (empty($this->config['view_path'])) {
+			$view = $this->config['view_dir_name'];
+
+			if (is_dir($this->app->getAppPath() . $view)) {
+				$path = $this->app->getAppPath() . $view . DIRECTORY_SEPARATOR;
+			} else {
+				$appName = $this->app->http->getName();
+				$path = $this->app->getRootPath() . $view . DIRECTORY_SEPARATOR . ($appName ? $appName . DIRECTORY_SEPARATOR : '');
+			}
+			$this->config['view_path'] = $path;
+			$this->template->view_path = $path;
+		}
+
 		if ('' == pathinfo($template, PATHINFO_EXTENSION)) {
 			// 获取模板文件名
 			$template = $this->parseTemplate($template);
@@ -107,21 +151,32 @@ class Twig
 		$this->app['log']
 			->record('[ VIEW ] ' . $template . ' [ ' . var_export(array_keys($data), true) . ' ]');
 
-		$path = [
-			$this->config['view_base'],
-			$this->config['view_base'] . Request()->app() . DIRECTORY_SEPARATOR,
-//			$this->config['view_base'] . Request()->app() . DIRECTORY_SEPARATOR . 'widget' . DIRECTORY_SEPARATOR,
-			$this->config['view_base'] . Request()->app() . DIRECTORY_SEPARATOR . Request()->controller() . DIRECTORY_SEPARATOR
+		$request = $this->app['request'];
+
+		$controller = $request->controller();
+
+		if (strpos($controller, '.')) {
+			$pos = strrpos($controller, '.');
+			$controller = substr($controller, 0, $pos) . '.' . Str::snake(substr($controller, $pos + 1));
+		} else {
+			$controller = Str::snake($controller);
+		}
+
+		$paths = [
+			$path,
+			$path . $controller . DIRECTORY_SEPARATOR
 		];
 
-		$loader = new \Twig\Loader\FilesystemLoader($path);
+		$loader = new \Twig\Loader\FilesystemLoader($paths);
 
 		$twig = new \Twig\Environment($loader, [
 			'cache' => $this->config['tpl_cache'] ? $this->config['cache_path'] : false,
 		]);
 
 		//自定义模板函数
-		$twig->addExtension(new TwigExpand());
+		if(class_exists('\TwigExpand')){
+			$twig->addExtension(new \TwigExpand());
+		}
 
 		//函数动态定义
 		$twig->registerUndefinedFunctionCallback(function ($name) {
@@ -131,7 +186,7 @@ class Twig
 			return false;
 		});
 
-		echo $twig->render(str_replace($this->config['view_base'], '', $template), $data);
+		$twig->display(str_replace($path, '', $template), $data);
 	}
 
 	/**
@@ -163,15 +218,19 @@ class Twig
 			list($app, $template) = explode('@', $template);
 		}
 
-		if ($this->config['view_path'] && !isset($app)) {
-			$path = $this->config['view_path'];
-		} else {
-			$app = isset($app) ? $app : $request->app();
-			// 基础视图目录
-//			$path = $this->config['view_base'];
-			$path = $this->config['view_base'] . ($app ? $app . DIRECTORY_SEPARATOR : '');
+		if (isset($app)) {
+			$view = $this->config['view_dir_name'];
+			$viewPath = $this->app->getBasePath() . $app . DIRECTORY_SEPARATOR . $view . DIRECTORY_SEPARATOR;
 
-			//			$this->template->view_path = $path;
+			if (is_dir($viewPath)) {
+				$path = $viewPath;
+			} else {
+				$path = $this->app->getRootPath() . $view . DIRECTORY_SEPARATOR . $app . DIRECTORY_SEPARATOR;
+			}
+
+			$this->template->view_path = $path;
+		} else {
+			$path = $this->config['view_path'];
 		}
 
 		$depr = $this->config['view_depr'];
