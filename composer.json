@@ -12,7 +12,6 @@
     },
     "require": {
         "php": ">=7.1.0",
-        "topthink/think-view": "*",
         "twig/twig": "*"
     },
     "autoload": {
