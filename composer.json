@@ -13,5 +13,10 @@
     "require": {
         "php": ">=7.2.0",
         "twig/twig": "*"
+    },
+    "autoload": {
+        "classmap": [
+            "think\\view\\driver\\"
+        ]
     }
 }
