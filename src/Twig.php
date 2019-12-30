@@ -105,10 +105,9 @@ class Twig
 			'cache' => $this->config['tpl_cache'] ? $this->config['cache_path'] : false,
 		]);
 
-		//判断自定义拓展是否定义
-		if (class_exists('TwigExpand')) {
-			//自定义模板函数
-			$twig->addExtension(new TwigExpand());
+		//自定义模板函数
+		if(class_exists('\TwigExpand')){
+			$twig->addExtension(new \TwigExpand());
 		}
 
 		//函数动态定义
