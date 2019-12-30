@@ -16,7 +16,7 @@
     },
     "autoload": {
         "classmap": [
-            "think\\view\\driver\\"
+            "src/"
         ]
     }
 }
