@@ -1,12 +1,12 @@
 # think-twig
-tp6 twig模板
+tp5 twig模板
 
 #安装方式
 ```
-composer require rain-sjh/think-twig
+composer require rain-sjh/think-twig=1.*
 ```
 
-安装完成后请在config配置文件view.php进行一下配置
+安装完成后请在config配置文件template.php进行一下配置
     
     return [
         // 模板引擎类型使用 Think
