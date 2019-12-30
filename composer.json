@@ -13,10 +13,5 @@
     "require": {
         "php": ">=7.2.0",
         "twig/twig": "*"
-    },
-    "autoload": {
-        "psr-4": {
-            "think\\view\\driver\\": "src"
-        }
     }
 }

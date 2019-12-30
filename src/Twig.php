@@ -53,22 +53,7 @@ class Twig
 			$this->config['cache_path'] = $app->getRuntimePath() . 'temp' . DIRECTORY_SEPARATOR;
 		}
 
-		$this->template = new Template($this->config);
-		$this->template->setCache($app->cache);
-		$this->template->extend('$Request', function (array $vars) {
-			// 获取Request请求对象参数
-			$method = array_shift($vars);
-			if (!empty($vars)) {
-				$params = implode('.', $vars);
-				if ('true' != $params) {
-					$params = '\'' . $params . '\'';
-				}
-			} else {
-				$params = '';
-			}
-
-			return 'app(\'request\')->' . $method . '(' . $params . ')';
-		});
+		$this->template = new Template($app, $this->config);
 	}
 
 
@@ -131,7 +116,7 @@ class Twig
 			return false;
 		});
 
-		echo $twig->render(str_replace($this->config['view_base'], '', $template), $data);
+		$twig->display(str_replace($this->config['view_base'], '', $template), $data);
 	}
 
 	/**
