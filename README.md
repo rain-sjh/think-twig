@@ -6,6 +6,11 @@ tp6 twig模板
 composer require rain-sjh/think-twig
 ```
 
+#缓存配置
+```
+'tpl_cache'    => true  当为 true 时启用缓存, 当为 false 时 关闭缓存.
+```
+
 安装完成后请在config配置文件view.php进行一下配置
     
     return [
