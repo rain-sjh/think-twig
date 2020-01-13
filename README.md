@@ -27,6 +27,8 @@ composer require rain-sjh/think-twig
         'taglib_begin'  => '{%',
         // 标签库标签结束标记
         'taglib_end'    => '%}',
+	// 是否开启缓存
+        'tpl_cache'    => true,
     ];
 
 如需拓展twig模板函数,请在extend下创建 TwigExpand.php 并实现接口
