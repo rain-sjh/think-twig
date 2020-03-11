@@ -17,6 +17,10 @@ use think\Exception;
 use think\helper\Str;
 use think\Template;
 use think\template\exception\TemplateNotFoundException;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
+use Twig\TwigFunction;
+use TwigExpand;
 
 class Twig
 {
@@ -27,17 +31,17 @@ class Twig
 	// 模板引擎参数
 	protected $config = [
 		// 默认模板渲染规则 1 解析为小写+下划线 2 全部转换小写 3 保持操作方法
-		'auto_rule' => 1,
+		'auto_rule'   => 1,
 		// 视图基础目录（集中式）
-		'view_base' => 'view',
+		'view_base'   => 'view',
 		// 模板起始路径
-		'view_path' => '',
+		'view_path'   => '',
 		// 模板文件后缀
 		'view_suffix' => 'twig',
 		// 模板文件名分隔符
-		'view_depr' => DIRECTORY_SEPARATOR,
+		'view_depr'   => DIRECTORY_SEPARATOR,
 		// 是否开启模板编译缓存,设为false则每次都会重新编译
-		'tpl_cache' => true,
+		'tpl_cache'   => false,
 	];
 
 	public function __construct(App $app, array $config = [])
@@ -98,7 +102,6 @@ class Twig
 		});
 	}
 
-
 	/**
 	 * 检测是否存在模板文件
 	 * @access public
@@ -133,6 +136,7 @@ class Twig
 				$appName = $this->app->http->getName();
 				$path = $this->app->getRootPath() . $view . DIRECTORY_SEPARATOR . ($appName ? $appName . DIRECTORY_SEPARATOR : '');
 			}
+
 			$this->config['view_path'] = $path;
 			$this->template->view_path = $path;
 		}
@@ -147,9 +151,19 @@ class Twig
 			throw new TemplateNotFoundException('template not exists:' . $template, $template);
 		}
 
+		$this->twigEngine($template, $data);
+	}
+
+	/**
+	 * 调用Twig引擎渲染模板
+	 * @param $path
+	 * @param $template
+	 * @param $data
+	 */
+	private function twigEngine($template, $data): void
+	{
 		// 记录视图信息
-		$this->app['log']
-			->record('[ VIEW ] ' . $template . ' [ ' . var_export(array_keys($data), true) . ' ]');
+		$this->app['log']->record('[ VIEW ] ' . $template . ' [ ' . var_export(array_keys($data), true) . ' ]');
 
 		$request = $this->app['request'];
 
@@ -162,31 +176,26 @@ class Twig
 			$controller = Str::snake($controller);
 		}
 
-		$paths = [
-			$path,
-			$path . $controller . DIRECTORY_SEPARATOR
-		];
+		$loader = new FilesystemLoader([dirname($template), $this->config['view_path']]);
 
-		$loader = new \Twig\Loader\FilesystemLoader($paths);
-
-		$twig = new \Twig\Environment($loader, [
+		$twig = new Environment($loader, [
 			'cache' => $this->config['tpl_cache'] ? $this->config['cache_path'] : false,
 		]);
 
 		//自定义模板函数
-		if(class_exists('\TwigExpand')){
-			$twig->addExtension(new \TwigExpand());
+		if (class_exists('\TwigExpand')) {
+			$twig->addExtension(new TwigExpand());
 		}
 
 		//函数动态定义
 		$twig->registerUndefinedFunctionCallback(function ($name) {
 			if (function_exists($name)) {
-				return new \Twig\TwigFunction($name, $name, ['is_safe' => ['html']]);
+				return new TwigFunction($name, $name, ['is_safe' => ['html']]);
 			}
 			return false;
 		});
 
-		$twig->display(str_replace($path, '', $template), $data);
+		$twig->display(basename($template), $data);
 	}
 
 	/**
