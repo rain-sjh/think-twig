@@ -19,5 +19,10 @@
         "psr-4": {
             "think\\view\\driver\\": "src"
         }
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "cp -R vendor/rain-sjh/think-twig/src/TwigExpand.php extend/"
+        ]
     }
 }
