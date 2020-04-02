@@ -11,7 +11,7 @@
         "issues": "https://github.com/625250353/think-twig"
     },
     "require": {
-        "php": ">=7.1.0",
+        "php": ">=5.1.0",
         "twig/twig": "*"
     },
     "autoload": {
