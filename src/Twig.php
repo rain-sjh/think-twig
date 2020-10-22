@@ -120,7 +120,11 @@ class Twig
 		// 记录视图信息
 		$this->app['log']->record('[ VIEW ] ' . $template . ' [ ' . var_export(array_keys($data), true) . ' ]');
 
-		$loader = new FilesystemLoader([dirname($template), $this->config['view_path']]);
+		$loader = new FilesystemLoader([
+			dirname($template), 
+			$this->config['view_path'],
+			$this->app->getAppPath() . DIRECTORY_SEPARATOR . 'common' . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR
+		]);
 
 		$twig = new Environment($loader, [
 			'cache' => $this->config['tpl_cache'] ? $this->config['cache_path'] : false,
